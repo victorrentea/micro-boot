@@ -24,13 +24,14 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.Data;
 
 @RestController
-@RequestMapping("/reservation")
+@RequestMapping("/reservationNames")
 public class ReservationClient {
 	
 	@Autowired
 	private RestTemplate restTemplate;
 	
 	public List<String> noop() {
+		System.out.println("Failover!!");
 		return emptyList();
 	}
 	
