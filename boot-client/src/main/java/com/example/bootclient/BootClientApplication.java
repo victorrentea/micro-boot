@@ -12,13 +12,10 @@ import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
-
 @EnableCircuitBreaker
-@EnableBinding(Source.class)
 @SpringBootApplication
 @EnableEurekaClient
 @EnableDiscoveryClient
-@EnableHystrix
 @EnableZuulProxy
 public class BootClientApplication {
 
