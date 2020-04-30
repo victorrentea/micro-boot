@@ -29,3 +29,4 @@ public class BootClientApplication {
 		SpringApplication.run(BootClientApplication.class, args);
 	}
 }
+
