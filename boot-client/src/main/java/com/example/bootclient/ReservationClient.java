@@ -1,49 +1,40 @@
 package com.example.bootclient;
 
-import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
+import java.util.Collection;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.Message;
-import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-
-import lombok.Data;
-
 @RestController
 public class ReservationClient/*<String>*/ {
-    private RestTemplate restTemplate = new RestTemplate();
-//    @Value("${server.port}")
+    private final RestTemplate restTemplate;
+
+    public ReservationClient(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
 
     @GetMapping("/dishes/special")
     public String dishes() {
         ResponseEntity<DishDto> dishResponse =
-                restTemplate.getForEntity("http://localhost:8080/dish/{id}",
+                restTemplate.getForEntity("http://boot-service/dish/{id}",
                 DishDto.class, 13);
         return dishResponse.getBody().name;
     }
     @GetMapping("/reservationNames")
     public List<String> getReservationNames(/*List<String >x*/) {
-        return restTemplate.exchange("http://localhost:8080/reservations",
+        return restTemplate.exchange("http://boot-service/reservations",
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<Resource<List<ReservationDto>>>(){})
+                new ParameterizedTypeReference<Resource<Collection<ReservationDto>>>(){})
             .getBody()
             .getContent()
             .stream()

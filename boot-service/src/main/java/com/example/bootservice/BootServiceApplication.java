@@ -1,5 +1,7 @@
 package com.example.bootservice;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -50,6 +52,8 @@ class B {
 @RefreshScope
 @RestController
 class MyResource {
+
+	private static final Logger log = LoggerFactory.getLogger(MyResource.class);
 	@Value("${message}")
 	private String message;
 
@@ -70,6 +74,7 @@ class MyResource {
 
 	@GetMapping("dish/{id}")
 	public DishDto getDish(@PathVariable long id) {
+		log.info("Handling request");
 		return new DishDto("Dish " + id, false, "ce-ai in frigider");
 	}
 }
