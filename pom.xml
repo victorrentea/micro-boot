@@ -12,11 +12,13 @@
     <artifactId>spring-microservices</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
-	<module>boot-client</module>
-	<module>boot-config-server</module>
-	<module>boot-eureka</module>
-	<module>boot-hystrix</module>
-	<module>boot-service</module>
+    <modules>
+        <module>boot-client</module>
+        <module>boot-config-server</module>
+        <module>boot-eureka</module>
+        <module>boot-hystrix</module>
+        <module>boot-service</module>
+    </modules>
 
 
 </project>
