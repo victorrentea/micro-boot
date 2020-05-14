@@ -26,44 +26,4 @@ import lombok.Data;
 @RestController
 @RequestMapping("/reservationNames")
 public class ReservationClient {
-	
-	@Autowired
-	private RestTemplate restTemplate;
-	
-	public List<String> noop() {
-		System.out.println("Failover!!");
-		return emptyList();
-	}
-	
-	@HystrixCommand(defaultFallback = "noop")
-	@GetMapping
-	public List<String> getReservationNames() {
-		return restTemplate.exchange("http://boot-service/reservation", 
-				HttpMethod.GET,
-				null,
-				new ParameterizedTypeReference<Resources<ReservationDto>>() {
-				})
-				.getBody()
-				.getContent()
-				.stream()
-				.map(ReservationDto::getName)
-				.collect(toList())
-				;
-	}
-	
-	@Autowired
-	private Source channel;
-	
-	@PostMapping
-	public void createReservation(@RequestBody ReservationDto r) {
-		Message<String> message = MessageBuilder.withPayload(r.getName()).build();
-		channel.output().send(message);
-		System.out.println("Message Sent");
-	}
-}
-
-@Data
-class ReservationDto {
-	private Long id;
-	private String name;
 }

@@ -32,26 +32,3 @@ public class BootServiceApplication {
 		SpringApplication.run(BootServiceApplication.class, args);
 	}
 }
-@MessageEndpoint
-class ReservationCreator {
-	@Autowired
-	private ReservationRestRepository repo;
-	
-	@ServiceActivator(inputChannel = "input")
-	public void acceptNewReservation(String rn) {
-		System.out.println("Message received.");
-		repo.save(new Reservation(rn));
-	}
-}
-
-@RefreshScope
-@RestController
-class MessageController {
-	@Value("${message}")
-	private String message;
-	
-	@GetMapping("message")
-	public String getMessage() {
-		return message;
-	}
-}
