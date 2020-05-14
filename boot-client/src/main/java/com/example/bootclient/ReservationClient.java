@@ -26,4 +26,8 @@ import lombok.Data;
 @RestController
 @RequestMapping("/reservationNames")
 public class ReservationClient {
+    @GetMapping
+    public List<String> getReservationNames() {
+        return emptyList();
+    }
 }
