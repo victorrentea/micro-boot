@@ -5,11 +5,13 @@ import static java.util.stream.Collectors.toList;
 import java.util.Collection;
 import java.util.List;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.retry.annotation.CircuitBreaker;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -22,6 +24,11 @@ public class ReservationClient/*<String>*/ {
         this.restTemplate = restTemplate;
     }
 
+    public String noop() {
+        return "e mort. mai stai o tzara";
+    }
+
+    @HystrixCommand(defaultFallback = "noop")
     @GetMapping("/dishes/special")
     public String dishes() {
         ResponseEntity<DishDto> dishResponse =
@@ -29,12 +36,16 @@ public class ReservationClient/*<String>*/ {
                 DishDto.class, 13);
         return dishResponse.getBody().name;
     }
+
+
+
     @GetMapping("/reservationNames")
     public List<String> getReservationNames(/*List<String >x*/) {
         return restTemplate.exchange("http://boot-service/reservations",
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<Resource<Collection<ReservationDto>>>(){})
+                new ParameterizedTypeReference<Resources<ReservationDto>>(){}
+                )
             .getBody()
             .getContent()
             .stream()
