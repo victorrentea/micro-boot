@@ -10,14 +10,14 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
 
 //@EnableBinding(Sink.class)
+@EnableSwagger2
 @SpringBootApplication
 //@EnableEurekaClient
 public class BootServiceApplication {
@@ -76,6 +76,10 @@ class MyResource {
 	public DishDto getDish(@PathVariable long id) {
 		log.info("Handling request");
 		return new DishDto("Dish " + id, false, "ce-ai in frigider");
+	}
+	@PostMapping("dish")
+	public void getDish(@RequestBody DishDto dishDto) {
+		System.out.println("NIMIC");
 	}
 }
 
