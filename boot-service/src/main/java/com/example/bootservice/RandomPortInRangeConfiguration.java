@@ -6,6 +6,7 @@ import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerF
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.SocketUtils;
 
+// setting server.port=0 doesn't play well with Eureka
 //@Configuration
 public class RandomPortInRangeConfiguration implements WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> {
 
