@@ -2,16 +2,14 @@ package com.example.bootclient;
 
 import static java.util.stream.Collectors.toList;
 
-import java.util.Collection;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.retry.annotation.CircuitBreaker;
+import org.springframework.http.*;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -24,16 +22,17 @@ public class ReservationClient/*<String>*/ {
         this.restTemplate = restTemplate;
     }
 
-    public String noop() {
-        return "e mort. mai stai o tzara";
-    }
+//    public String noop() {
+//        return "e mort. mai stai o tzara";
+//    }
 
-    @HystrixCommand(defaultFallback = "noop")
+//    @HystrixCommand(defaultFallback = "noop")
     @GetMapping("/dishes/special")
-    public String dishes() {
-        ResponseEntity<DishDto> dishResponse =
-                restTemplate.getForEntity("http://boot-service/dish/{id}",
-                DishDto.class, 13);
+    public String dishes() throws URISyntaxException {
+        MultiValueMap<String, String> headers = new HttpHeaders();
+        headers.add("Authorization", "Basic YWRtaW46YWRtaW4=");
+        RequestEntity<String> entity = new RequestEntity<>(headers, HttpMethod.GET, new URI("http://boot-service/dish/13"));
+        ResponseEntity<DishDto> dishResponse = restTemplate.exchange(entity,DishDto.class);
         return dishResponse.getBody().name;
     }
 
