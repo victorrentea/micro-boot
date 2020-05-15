@@ -17,6 +17,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .anyRequest().authenticated()
                 .and()
+                // NU CARE CUMVA SA FOLOSESTI BASIC AUTH PE UN ENDPOINT CARE NU E SSL (https://)
                 .httpBasic();
     }
 
